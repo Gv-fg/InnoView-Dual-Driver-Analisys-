@@ -1,0 +1,47 @@
+Informe Detallado de Análisis del Archivo USBDisplay_Windows_V4.1.9.22.exe
+Introducción
+Este análisis se realizó sobre el archivo USBDisplay_Windows_V4.1.9.22.exe, un instalador de controladores para una pantalla dual USB. El objetivo del análisis fue determinar si este archivo es seguro para su instalación y si presenta algún riesgo para la seguridad del sistema. Se utilizaron varias herramientas avanzadas de análisis, como AnyRun, Triage, Hybrid Analysis e Intezer, para obtener un panorama detallado de su comportamiento.
+________________________________________
+Descripción del Archivo
+•	Nombre: USBDisplay_Windows_V4.1.9.22.exe
+•	SHA256: fbc0fa5dcc4580ad777513b47d2b0bdb2706ee1ee00836d5378bf42a05bff18c
+•	Tamaño: 4.29 MB
+•	Compañía: MacroSilicon Technology Co., Ltd.
+•	Producto: Win USB Display (versión 4.1.9.22)
+•	Fecha de Compilación: 14 de abril de 2022
+________________________________________
+Análisis por Herramientas
+1. AnyRun
+El análisis dinámico en AnyRun mostró los siguientes comportamientos críticos:
+•	Creación de archivos temporales: El archivo genera múltiples archivos .tmp durante su ejecución, lo cual es común en los instaladores. Sin embargo, algunos malwares utilizan esta táctica para esconder actividad maliciosa.
+•	Modificación del Registro: Se identificaron cambios en el registro de Windows, particularmente en claves que permiten la ejecución automática del programa en el inicio del sistema. Esta es una técnica común tanto en software legítimo como en malware, dependiendo del propósito de la autoejecución.
+•	Ejecución del Programador de Tareas: Se utiliza el Programador de Tareas de Windows para ejecutar procesos durante el arranque, lo que también es típico en software legítimo, pero es una técnica usada frecuentemente por malware para obtener persistencia.
+En AnyRun no se identificaron comportamientos confirmadamente maliciosos, pero los cambios en el registro y la autoejecución son actividades que requieren atención.
+2. Triage
+El análisis con Triage reveló las siguientes observaciones:
+•	Ajustes de Privilegios: El archivo utiliza funciones para ajustar privilegios, como AdjustTokenPrivileges, lo que podría permitirle realizar operaciones administrativas sin restricciones.
+•	Persistencia: El archivo se asegura de ejecutarse automáticamente cada vez que el sistema arranca, lo cual fue observado en las modificaciones del registro y en la escritura de archivos en carpetas de inicio.
+•	Ejecución de Procesos Remotos: El archivo también realiza escritura en procesos remotos, una técnica que podría ser usada por malware para inyectar código malicioso en otros procesos.
+Si bien Triage no detectó un comportamiento categóricamente malicioso, estas actividades sugieren que el archivo opera con permisos elevados y asegura su ejecución continua en el sistema.
+3. Hybrid Analysis
+El análisis de Hybrid Analysis presentó los siguientes puntos importantes:
+•	Persistencia y Evasión: El archivo se instala para ejecutarse al inicio del sistema mediante la modificación de claves del registro, lo cual es típico en software de controladores, pero también en malware que busca persistencia.
+•	Modificación de Archivos Críticos: Se detectó la escritura de archivos en directorios del sistema, como System32 y Program Files, lo que es típico de instaladores de controladores, pero también es usado para modificar el sistema en software malicioso.
+•	Conexiones en Red: Durante la ejecución del archivo, se observaron conexiones a dominios legítimos como secure.globalsign.com, pero no se detectaron conexiones a servidores sospechosos o maliciosos. Esto sugiere que el archivo podría estar verificando certificados de seguridad.
+Hybrid Analysis concluye que el archivo presenta actividades que pueden clasificarse como sospechosas, especialmente la persistencia y la modificación del registro, pero no confirma actividad maliciosa.
+4. Intezer
+El análisis genético realizado por Intezer muestra que el archivo principal USBDisplay_Windows_V4.1.9.22.exe es confiable, sin detecciones de malware conocidas. Algunos detalles clave incluyen:
+•	Código relacionado con InnoSetup: El 80% del código está relacionado con InnoSetup, una herramienta legítima de instalación.
+•	Archivos extraídos sospechosos: Durante la instalación, el archivo genera varios componentes adicionales, algunos de los cuales fueron etiquetados como sospechosos. Esto incluye archivos .inf y .sys, relacionados con los controladores de hardware.
+•	Persistencia y Modificación del Registro: El análisis muestra que el archivo modifica el registro para obtener persistencia, lo cual podría ser una técnica legítima, pero plantea preocupaciones en términos de seguridad.
+Intezer concluye que el archivo principal no es malicioso, pero los archivos generados durante la instalación presentan comportamientos que podrían ser considerados riesgosos.
+________________________________________
+Conclusiones
+Después de analizar los resultados obtenidos de las diferentes herramientas, se puede llegar a las siguientes conclusiones:
+1.	Persistencia y Autoejecución: El archivo USBDisplay_Windows_V4.1.9.22.exe asegura su persistencia en el sistema al modificar claves del registro y agregar tareas automáticas al inicio de Windows. Este comportamiento es característico tanto de software legítimo como de malware que busca mantener acceso continuo al sistema. Sin embargo, en el contexto de un controlador de hardware, la persistencia podría estar justificada, ya que es común que estos componentes se carguen al inicio del sistema.
+2.	Modificación del Registro y Privilegios Elevados: El archivo modifica claves del registro y ajusta privilegios en el sistema, lo que permite su ejecución con permisos elevados. Si bien esto podría ser necesario para la instalación de controladores de hardware, también representa un riesgo potencial, ya que el acceso privilegiado podría ser explotado para realizar cambios críticos en el sistema.
+3.	Conexiones en Red Legítimas: El archivo realiza conexiones a servidores legítimos, como secure.globalsign.com, lo que sugiere que está verificando certificados o descargando actualizaciones seguras. No se observaron intentos de comunicación con servidores sospechosos o maliciosos.
+4.	Archivos Extraídos Sospechosos: Aunque el archivo principal fue clasificado como confiable, algunos archivos generados durante la instalación, en particular los controladores .inf y .sys, fueron etiquetados como sospechosos. Esto podría deberse a comportamientos inusuales en la forma en que estos archivos interactúan con el sistema.
+
+Conclusión Final
+El archivo USBDisplay_Windows_V4.1.9.22.exe es instalable, ya que no se identificaron comportamientos categóricamente maliciosos. Sin embargo, el comportamiento relacionado con la persistencia, la modificación del registro y los archivos extraídos sospechosos sugiere que la instalación del controlador puede representar un riesgo para la seguridad del sistema, especialmente si no proviene de una fuente completamente confiable.
