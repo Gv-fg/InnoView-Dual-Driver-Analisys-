@@ -1,0 +1,60 @@
+Detailed Analysis Report on the File USBDisplay_Windows_V4.1.9.22.exe
+Introduction
+This analysis was conducted on the file USBDisplay_Windows_V4.1.9.22.exe, an installer for USB dual screen drivers. The goal of the analysis was to determine if this file is safe to install and if it poses any security risks to the system. Several advanced malware analysis tools, including AnyRun, Triage, Hybrid Analysis, and Intezer, were used to gain a comprehensive view of the file's behavior.
+________________________________________
+File Description
+•	Name: USBDisplay_Windows_V4.1.9.22.exe
+•	SHA256: fbc0fa5dcc4580ad777513b47d2b0bdb2706ee1ee00836d5378bf42a05bff18c
+•	Size: 4.29 MB
+•	Company: MacroSilicon Technology Co., Ltd.
+•	Product: Win USB Display (version 4.1.9.22)
+•	Compilation Date: April 14, 2022
+________________________________________
+Tools Used
+1.	AnyRun: Provides dynamic analysis and behavior insights in a sandboxed environment.
+2.	Triage: Identifies malicious behaviors and highlights techniques associated with MITRE ATT&CK.
+3.	Hybrid Analysis: Analyzes network behavior, evasion techniques, and persistence strategies.
+4.	Intezer: Conducts genetic analysis of the file, comparing its code with known malware and legitimate software.
+________________________________________
+Results from Each Tool
+1. AnyRun
+The dynamic analysis in AnyRun revealed the following key behaviors:
+•	Creation of Temporary Files: The file generates multiple .tmp files during execution, which is typical for installers, but may be used by malware to conceal malicious activity.
+•	Registry Modification: Changes were observed in the Windows registry, particularly in keys that allow the program to automatically run at system startup. This technique is common for both legitimate software and malware, depending on the intent behind the auto-execution.
+•	Task Scheduler Execution: The Windows Task Scheduler is used to execute processes during boot, a behavior seen in legitimate software, but also commonly exploited by malware for persistence.
+AnyRun did not identify any definitively malicious behaviors, but registry modifications and auto-execution warrant further scrutiny.
+2. Triage
+The analysis by Triage uncovered the following observations:
+•	Privilege Adjustments: The file uses functions like AdjustTokenPrivileges to adjust system privileges, which could allow it to perform administrative operations without restrictions.
+•	Persistence: The file ensures its automatic execution at system boot by modifying the registry and writing files to startup directories.
+•	Remote Process Execution: The file also writes data to remote processes, a technique that could be used by malware to inject malicious code into other processes.
+While Triage did not confirm explicitly malicious behavior, these activities suggest that the file operates with elevated privileges and ensures continuous execution on the system.
+3. Hybrid Analysis
+The Hybrid Analysis results highlighted the following:
+•	Persistence and Evasion: The file installs itself to run at system startup by modifying registry keys, which is typical for hardware drivers but also a common tactic for malware seeking persistence.
+•	Modification of Critical Files: The file writes to critical system directories, such as System32 and Program Files. This is common for driver installers, but can also be exploited by malware to alter system behavior.
+•	Network Connections: During execution, the file connects to legitimate domains like secure.globalsign.com, which likely indicates certificate verification or secure updates. No suspicious or malicious server connections were detected.
+Hybrid Analysis concludes that, while persistence and registry modification behaviors are present, no malicious network activity was observed, and the file is signed by a legitimate vendor.
+4. Intezer
+The genetic analysis conducted by Intezer shows that the main file USBDisplay_Windows_V4.1.9.22.exe is classified as trusted, with zero malware detections. Key insights include:
+•	Code Related to InnoSetup: 80% of the code is associated with InnoSetup, a legitimate installation tool.
+•	Suspicious Extracted Files: During installation, several additional components are generated, some of which were flagged as suspicious, including .inf and .sys driver files.
+•	Persistence and Registry Modification: The analysis shows the file modifies the registry for persistence, a behavior that could be legitimate but raises security concerns.
+Intezer concludes that the main file is not malicious, but the extracted files during installation exhibit behaviors that may be risky.
+________________________________________
+MITRE ATT&CK Techniques Identified
+Throughout the analysis, several techniques associated with MITRE ATT&CK were detected, including:
+•	Persistence: The file installs itself to run automatically at system startup via registry keys and startup folders.
+•	Evasion: The file modifies registry keys and attempts to disable security tools, a behavior typical of malware and low-level software that requires elevated permissions.
+•	Privilege Adjustments: Functions that alter system privileges are used, allowing the file to perform operations with administrative access.
+________________________________________
+Key Behaviors Observed
+•	System Persistence: Through registry modifications and the creation of auto-execution tasks, the file ensures it will run on system startup. While common for hardware drivers, this behavior can also pose a security risk if exploited.
+•	Registry and Privilege Modifications: The file modifies system registry keys and adjusts privileges, allowing it to execute with elevated permissions. This is necessary for some legitimate software but can also be dangerous if misused.
+•	Legitimate Network Connections: The file communicates with legitimate servers such as secure.globalsign.com, indicating it may be verifying certificates or performing secure updates. No suspicious network connections were observed.
+•	Suspicious Extracted Files: While the main executable was deemed trustworthy, some extracted files (e.g., .inf and .sys driver files) were flagged as suspicious, warranting further investigation.
+________________________________________
+
+
+Final Conclusion
+After analyzing the results from multiple tools, the file USBDisplay_Windows_V4.1.9.22.exe is considered installable. However, the behaviors related to persistence, registry modification, and the presence of suspicious extracted files indicate that installing this driver could introduce security risks to the system, especially if the source is not fully trusted.
